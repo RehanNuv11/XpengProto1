@@ -121,6 +121,10 @@ body {
     filter: brightness(0) invert(1);
 }
 
+.navbar.scrolled .logo-image {
+    filter: none;
+}
+
 .navbar-menu {
     display: flex;
     list-style: none;
@@ -222,7 +226,7 @@ body {
 }
 
 .navbar.scrolled .navbar-menu a {
-    color: white;
+    color: var(--primary-color);
 }
 
 .navbar.scrolled .navbar-menu a:hover {

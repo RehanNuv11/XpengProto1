@@ -75,6 +75,18 @@ function handleModelCards() {
     
     modelCards.forEach(card => {
         const video = card.querySelector('.model-video');
+        const modelType = card.getAttribute('data-model');
+        
+        // Add click handler for X9 card
+        if (modelType === 'x9') {
+            card.addEventListener('click', (e) => {
+                // Don't navigate if clicking the arrow link
+                if (!e.target.closest('.model-card-link')) {
+                    window.location.href = 'x9.html';
+                }
+            });
+            card.style.cursor = 'pointer';
+        }
         
         card.addEventListener('mouseenter', () => {
             if (video) {

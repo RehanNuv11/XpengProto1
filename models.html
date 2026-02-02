@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Models - XPENG Indonesia</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+    <style>
+        /* Force navbar to be visible on models page */
+        .navbar {
+            background: rgba(255, 255, 255, 0.98) !important;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        .navbar-menu a {
+            color: var(--primary-color);
+        }
+
+        .navbar-contact {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .navbar-toggle span {
+            background: var(--primary-color);
+        }
+
+        .models-hero {
+            min-height: 100vh;
+            background: white;
+            padding-top: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .model-image-container {
+            width: 100%;
+            max-width: 1600px;
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 600px;
+            position: relative;
+        }
+
+        .model-image-container::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, 
+                #f8f8f8 0%, 
+                transparent 15%, 
+                transparent 85%, 
+                #f8f8f8 100%
+            );
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .model-image {
+            width: 100%;
+            height: 500px;
+            max-width: 1400px;
+            object-fit: contain;
+            object-position: center;
+            transition: opacity 0.3s ease;
+            position: relative;
+            z-index: 0;
+        }
+
+        .model-tabs {
+            display: flex;
+            gap: 2rem;
+            margin: 2rem 0;
+            padding: 0 2rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .model-tab {
+            padding: 1rem 1.5rem;
+            font-size: 16px;
+            font-weight: 500;
+            color: #666;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            bottom: -1px;
+        }
+
+        .model-tab:hover {
+            color: var(--primary-color);
+        }
+
+        .model-tab.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .model-info {
+            text-align: center;
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .model-name {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 900;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+        }
+
+        .model-type {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: #f0f0f0;
+            border-radius: 20px;
+            font-size: 14px;
+            color: #666;
+            font-weight: 500;
+            margin-bottom: 2rem;
+        }
+
+        .model-cta {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        /* Color Picker Section */
+        .color-picker-section {
+            padding: 2rem 2rem 0 2rem;
+            text-align: center;
+            background: transparent;
+            display: none;
+        }
+
+        .color-picker-section.active {
+            display: block;
+        }
+
+        .color-picker-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .color-picker-colors {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .color-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .color-option:hover {
+            transform: translateY(-4px);
+        }
+
+        .color-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .color-option.active .color-circle {
+            border-color: #ff6600;
+            box-shadow: 0 0 0 2px white, 0 0 0 4px #ff6600;
+        }
+
+        .color-circle.arctic-white {
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+        }
+
+        .color-circle.graphite-gray {
+            background: #495057;
+        }
+
+        .color-circle.midnight-black {
+            background: #000000;
+        }
+
+        .color-circle.silver-frost {
+            background: linear-gradient(135deg, #b8c1cc 0%, #dfe6e9 100%);
+        }
+
+        .color-circle.stellar-purple {
+            background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+        }
+
+        .color-circle.black-edition {
+            background: linear-gradient(135deg, #000000 0%, #2d3436 100%);
+        }
+
+        .color-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        /* Specs Section */
+        .model-specs-section {
+            padding: 6rem 2rem;
+            background: var(--secondary-color);
+        }
+
+        .model-specs-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .model-specs-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .spec-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .spec-value {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 900;
+            color: var(--primary-color);
+            line-height: 1;
+        }
+
+        .spec-value span {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 600;
+        }
+
+        .spec-label {
+            font-size: 14px;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .model-features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .feature-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-image:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .model-pricing-box {
+            background: var(--secondary-color);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 2px solid #e5e7eb;
+            margin-top: 1rem;
+        }
+
+        .model-pricing-box h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--primary-color);
+        }
+
+        .model-price-table {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .model-price-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .model-price-row:last-child {
+            border-bottom: none;
+        }
+
+        .model-price-row.header {
+            background: #f9fafb;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .model-price-cell {
+            padding: 0.75rem 1rem;
+            border-right: 1px solid #e5e7eb;
+            font-size: 14px;
+        }
+
+        .model-price-cell:last-child {
+            border-right: none;
+        }
+
+        .model-price-cell.type {
+            font-weight: 600;
+        }
+
+        .model-price-cell.price {
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+
+        .specs-cta {
+            margin-top: 1rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .specs-cta .btn {
+            padding: 0.8rem 2rem;
+            border-radius: 4px;
+            border: 2px solid var(--primary-color);
+            background: transparent;
+            color: var(--primary-color);
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .specs-cta .btn:hover {
+            background: var(--primary-color);
+            color: var(--secondary-color);
+        }
+
+        /* Advantages Section */
+        .model-advantages-section {
+            padding: 6rem 2rem;
+            background: var(--secondary-color);
+        }
+
+        .model-advantages-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .advantages-image {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 3rem;
+        }
+
+        .advantages-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+        }
+
+        .advantage-item {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .advantage-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary-color);
+            padding-left: 1rem;
+            border-left: 4px solid #10b981;
+            line-height: 1.4;
+        }
+
+        .advantage-description {
+            font-size: 14px;
+            line-height: 1.8;
+            color: var(--text-light);
+            padding-left: 1rem;
+        }
+
+        /* Cabin Carousel Section */
+        .model-cabin-section {
+            padding: 6rem 2rem;
+            background: var(--primary-color);
+        }
+
+        .model-cabin-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .model-cabin-container h2 {
+            color: var(--secondary-color);
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+        }
+
+        .model-cabin-subtitle {
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 16px;
+        }
+
+        .model-cabin-carousel {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        .model-cabin-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .model-cabin-slide {
+            min-width: 100%;
+            height: 600px;
+            flex-shrink: 0;
+        }
+
+        .model-cabin-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .model-carousel-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--primary-color);
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .model-carousel-arrow:hover {
+            background: var(--secondary-color);
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .model-carousel-arrow.prev {
+            left: 2rem;
+        }
+
+        .model-carousel-arrow.next {
+            right: 2rem;
+        }
+
+        .model-carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .model-carousel-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .model-carousel-dot.active {
+            background: var(--secondary-color);
+            width: 32px;
+            border-radius: 6px;
+        }
+
+        .fade-enter {
+            opacity: 0;
+        }
+
+        .fade-enter-active {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .models-hero {
+                padding-top: 70px;
+            }
+
+            .model-image-container {
+                min-height: 400px;
+                padding: 1rem;
+            }
+
+            .model-tabs {
+                gap: 1rem;
+                padding: 0 1rem;
+                justify-content: center;
+            }
+
+            .model-tab {
+                padding: 0.8rem 1rem;
+                font-size: 14px;
+            }
+
+            .model-name {
+                font-size: 2rem;
+            }
+
+            .model-cta {
+                flex-direction: column;
+                padding: 0 1rem;
+            }
+
+            .model-cta .btn {
+                width: 100%;
+            }
+
+            .model-specs-container {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .model-specs-content {
+                order: 2;
+            }
+
+            .model-features-grid {
+                order: 1;
+            }
+
+            .feature-image {
+                height: 250px;
+            }
+
+            .model-cabin-slide {
+                height: 400px;
+            }
+
+            .model-carousel-arrow {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+
+            .model-carousel-arrow.prev {
+                left: 1rem;
+            }
+
+            .model-carousel-arrow.next {
+                right: 1rem;
+            }
+
+            .advantages-image {
+                height: 300px;
+            }
+
+            .advantages-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <a href="index.html" class="navbar-logo">
+            <img src="asset/logo.png" alt="XPENG Logo" class="logo-image">
+        </a>
+        <ul class="navbar-menu" id="navbarMenu">
+            <li><a href="index.html#hero">Home</a></li>
+            <li><a href="models.html">Models</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+            <li><a href="https://wa.link/930fd6" target="_blank">Test Drive</a></li>
+            <li><a href="https://wa.link/930fd6" target="_blank">Simulasi Kredit</a></li>
+        </ul>
+        <a href="https://wa.link/930fd6" target="_blank" class="navbar-contact">Contact Us</a>
+        <button class="navbar-toggle" id="navbarToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.link/930fd6" target="_blank" class="whatsapp-button">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Models Hero -->
+    <section class="models-hero">
+        <div class="model-image-container">
+            <img src="asset/x9/x9.jpeg" alt="XPENG X9" class="model-image" id="modelImage">
+        </div>
+
+        <!-- Color Picker -->
+        <div class="color-picker-section" id="colorPickerSection">
+            <div class="color-picker-container">
+                <div class="color-picker-colors" id="colorPickerColors">
+                    <!-- Colors will be populated dynamically -->
+                </div>
+            </div>
+        </div>
+
+        <div class="model-tabs">
+            <button class="model-tab active" data-model="x9">X9</button>
+            <button class="model-tab" data-model="G6">G6</button>
+        </div>
+
+        <div class="model-info">
+            <h1 class="model-name" id="modelName">XPENG X9</h1>
+            <span class="model-type" id="modelType">Ultra Smart Large Seven-seater MPV</span>
+        </div>
+    </section>
+
+    <!-- Model Specs Section -->
+    <section class="model-specs-section" id="specsSection">
+        <div class="model-specs-container">
+            <!-- Specs Content (Kiri) -->
+            <div class="model-specs-content">
+                <div class="spec-item">
+                    <div class="spec-value">5.7<span>s</span></div>
+                    <div class="spec-label">Acceleration 0 - 100 km/h</div>
+                </div>
+
+                <div class="spec-item">
+                    <div class="spec-value">370<span>kW</span> / 640<span>Nm</span></div>
+                    <div class="spec-label">Power (kW) / Torque (Nm)</div>
+                </div>
+
+                <div class="spec-item">
+                    <div class="spec-value">702<span>km</span></div>
+                    <div class="spec-label">CLTC Range</div>
+                </div>
+
+                <!-- Pricing Table -->
+                <div class="model-pricing-box" id="pricingBox">
+                    <h3>Pricing</h3>
+                    <div class="model-price-table" id="priceTable">
+                        <div class="model-price-row header">
+                            <div class="model-price-cell">TYPE</div>
+                            <div class="model-price-cell">ON THE ROAD</div>
+                        </div>
+                        <div class="model-price-row">
+                            <div class="model-price-cell type" id="priceType1">X9 PRO</div>
+                            <div class="model-price-cell price" id="priceValue1">Rp 1.169.000.000</div>
+                        </div>
+                        <div class="model-price-row">
+                            <div class="model-price-cell type" id="priceType2">X9 PRO+</div>
+                            <div class="model-price-cell price" id="priceValue2">Rp 1.209.000.000</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="specs-cta">
+                    <a href="#" class="btn" id="specsDetailBtn" onclick="event.preventDefault(); alert('Brochure akan segera tersedia');">Download Brochure</a>
+                    <a href="https://wa.link/930fd6" target="_blank" class="btn btn-primary">Book Test Drive</a>
+                </div>
+            </div>
+
+            <!-- Features Grid (Kanan) -->
+            <div class="model-features-grid">
+                <img src="asset/x9/grid1.jpg" alt="X9 Feature 1" class="feature-image">
+                <img src="asset/x9/grid2.jpg" alt="X9 Feature 2" class="feature-image">
+                <img src="asset/x9/grid3.jpg" alt="X9 Feature 3" class="feature-image">
+                <img src="asset/x9/grid4.jpg" alt="X9 Feature 4" class="feature-image">
+            </div>
+        </div>
+    </section>
+
+    <!-- Advantages Section -->
+    <section class="model-advantages-section" id="advantagesSection">
+        <div class="model-advantages-container">
+            <img src="asset/x9/keungulan.jpg" alt="Interior Advantages" class="advantages-image" id="advantagesImage">
+            
+            <div class="advantages-grid" id="advantagesGrid">
+                <div class="advantage-item">
+                    <h3 class="advantage-title">Zero-gravity Reclining Sofas</h3>
+                    <p class="advantage-description">Zero-gravity chairs that better fit the human body curve and usage characteristics Ultimate enjoyment of body and mind, just one touch</p>
+                </div>
+                <div class="advantage-item">
+                    <h3 class="advantage-title">Nappa Leather Seats</h3>
+                    <p class="advantage-description">Every inch has a high-end touch</p>
+                </div>
+                <div class="advantage-item">
+                    <h3 class="advantage-title">6-mode Massage Function</h3>
+                    <p class="advantage-description">Combined with the ten-point massage with a gradual opening layout, the unique acupressure effect brings an unprecedented relaxing experience</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cabin Carousel Section -->
+    <section class="model-cabin-section" id="cabinSection">
+        <div class="model-cabin-container">
+            <h2>Customizable, smart cabin arrangements for multiple uses</h2>
+            <p class="model-cabin-subtitle">Cabin layout the way you want it</p>
+            
+            <div class="model-cabin-carousel">
+                <div class="model-cabin-track" id="cabinTrack">
+                    <div class="model-cabin-slide">
+                        <img src="asset/x9/cabin1.jpg" alt="Cabin Configuration 1" id="cabin1">
+                    </div>
+                    <div class="model-cabin-slide">
+                        <img src="asset/x9/cabin2.jpg" alt="Cabin Configuration 2" id="cabin2">
+                    </div>
+                    <div class="model-cabin-slide">
+                        <img src="asset/x9/cabin3.jpg" alt="Cabin Configuration 3" id="cabin3">
+                    </div>
+                </div>
+                
+                <button class="model-carousel-arrow prev" id="cabinPrev">‹</button>
+                <button class="model-carousel-arrow next" id="cabinNext">›</button>
+            </div>
+            
+            <div class="model-carousel-dots" id="cabinDots">
+                <button class="model-carousel-dot active" data-index="0"></button>
+                <button class="model-carousel-dot" data-index="1"></button>
+                <button class="model-carousel-dot" data-index="2"></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-main">
+                <div class="footer-column">
+                    <h4>XPENG Indonesia</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="x9.html">X9</a></li>
+                        <li><a href="models.html">All Models</a></li>
+                        <li><a href="gallery.html">Gallery</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="https://wa.link/930fd6" target="_blank">Test Drive</a></li>
+                        <li><a href="https://wa.link/930fd6" target="_blank">Simulasi Kredit</a></li>
+                        <li><a href="https://wa.link/930fd6" target="_blank">Aftersales</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><a href="https://wa.link/930fd6" target="_blank">WhatsApp</a></li>
+                        <li><a href="mailto:info@xpeng.id">Email</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 XPENG Indonesia. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Model data
+        const models = {
+            x9: {
+                name: 'XPENG X9',
+                type: 'Ultra Smart Large Seven-seater MPV',
+                image: 'asset/x9/x9.jpeg',
+                detailUrl: 'x9.html',
+                colors: {
+                    'silver-frost': 'asset/x9/x9.jpeg',
+                    'midnight-black': 'asset/x9/x9.jpeg',
+                    'arctic-white': 'asset/x9/x9.jpeg'
+                },
+                colorNames: ['Silver Frost', 'Midnight Black', 'Arctic White'],
+                gridImages: [
+                    'asset/x9/grid1.jpg',
+                    'asset/x9/grid2.jpg',
+                    'asset/x9/grid3.jpg',
+                    'asset/x9/grid4.jpg'
+                ],
+                cabinImages: [
+                    'asset/x9/cabin1.jpg',
+                    'asset/x9/cabin2.jpg',
+                    'asset/x9/cabin3.jpg'
+                ],
+                pricing: [
+                    { type: 'X9 PRO', price: 'Rp 1.169.000.000' },
+                    { type: 'X9 PRO+', price: 'Rp 1.209.000.000' }
+                ]
+            },
+            G6: {
+                name: 'XPENG G6',
+                type: 'Premium Intelligent SUV',
+                image: 'asset/g6/white.png  ',
+                detailUrl: 'index.html#models',
+                colors: {
+                    'arctic-white': 'asset/g6/white.png',
+                    'graphite-gray': 'asset/g6/gray.png',
+                    'midnight-black': 'asset/g6/black.png',
+                    'silver-frost': 'asset/g6/silver.png',
+                    'stellar-purple': 'asset/g6/purple.png',
+                    'black-edition': 'asset/g6/blackedition.png'
+                },
+                colorNames: ['Arctic White', 'Graphite Gray', 'Midnight Black', 'Silver Frost', 'Stellar Purple', 'Black Edition'],
+                gridImages: [
+                    'asset/g6/grid1.jpg',
+                    'asset/g6/grid2.jpg',
+                    'asset/g6/grid3.jpg',
+                    'asset/g6/grid4.jpg'
+                ],
+                cabinImages: [
+                    'asset/g6/cabin1.jpg',
+                    'asset/g6/cabin2.jpg',
+                    'asset/g6/cabin3.jpg',
+                    'asset/g6/cabin4.jpg',
+                    'asset/g6/cabin5.jpg'
+                ],
+                cabinTitles: [
+                    'Starship-Inspired Exterior',
+                    'Immersive Lounge Cabin',
+                    'XPILOT ASSIST Intelligent Driving System',
+                    'Full-Scene XOS COCKPIT',
+                    'Full-Domain 800V High-Voltage SiC Platform'
+                ],
+                cabinDescriptions: [
+                    'Fastback Silhouette, long front overhang, Full-width Integrated Light Bar',
+                    'Power-reclining Nappa Leather seats, Unmatched legroom and headroom',
+                    'Advanced assisted Driving system with full-scenario adaptability',
+                    'Seamless voice control, OTA-upgradeable interface',
+                    '5C Supercharging Battery, 10-80% SOC in 12 Minutes, advanced thermal control'
+                ],
+                pricing: [
+                    { type: 'G6 550', price: 'Rp 950.000.000' },
+                    { type: 'G6 650', price: 'Rp 1.050.000.000' }
+                ]
+            }
+        };
+
+        let currentModel = 'x9';
+        let currentSlide = 0;
+        let totalSlides = 3;
+        let currentColor = 'arctic-white';
+
+        // Navbar scroll effect
+        function handleNavbarScroll() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        }
+
+        // Mobile menu toggle
+        function handleMobileMenu() {
+            const navbarToggle = document.getElementById('navbarToggle');
+            const navbarMenu = document.getElementById('navbarMenu');
+            
+            navbarToggle.addEventListener('click', () => {
+                navbarMenu.classList.toggle('active');
+                navbarToggle.classList.toggle('active');
+            });
+        }
+
+        // Cabin Carousel Functions
+        function updateCarousel() {
+            const track = document.getElementById('cabinTrack');
+            const dots = document.querySelectorAll('.model-carousel-dot');
+            
+            track.style.transform = `translateX(-${currentSlide * 100}%)`;
+            
+            dots.forEach((dot, index) => {
+                if (index === currentSlide) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            updateCarousel();
+            updateCabinText();
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            updateCarousel();
+            updateCabinText();
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateCarousel();
+            updateCabinText();
+        }
+
+        // Update grid images based on model
+        function updateGridImages(modelKey) {
+            const model = models[modelKey];
+            if (!model.gridImages) return;
+            
+            const gridImages = document.querySelectorAll('.model-features-grid .feature-image');
+            model.gridImages.forEach((src, index) => {
+                if (gridImages[index]) {
+                    gridImages[index].src = src;
+                }
+            });
+        }
+
+        // Update cabin images based on model
+        function updateCabinImages(modelKey) {
+            const model = models[modelKey];
+            const track = document.getElementById('cabinTrack');
+            const dotsContainer = document.getElementById('cabinDots');
+            
+            // Clear existing slides and dots
+            track.innerHTML = '';
+            dotsContainer.innerHTML = '';
+            
+            // Create slides for each cabin image
+            model.cabinImages.forEach((src, index) => {
+                // Create slide
+                const slide = document.createElement('div');
+                slide.className = 'model-cabin-slide';
+                const img = document.createElement('img');
+                img.src = src;
+                img.alt = model.cabinTitles ? model.cabinTitles[index] : `${model.name} Cabin ${index + 1}`;
+                img.id = `cabin${index + 1}`;
+                slide.appendChild(img);
+                track.appendChild(slide);
+                
+                // Create dot
+                const dot = document.createElement('button');
+                dot.className = index === 0 ? 'model-carousel-dot active' : 'model-carousel-dot';
+                dot.dataset.index = index;
+                dot.addEventListener('click', () => goToSlide(parseInt(dot.dataset.index)));
+                dotsContainer.appendChild(dot);
+            });
+            
+            // Update total slides
+            totalSlides = model.cabinImages.length;
+            currentSlide = 0;
+            updateCarousel();
+            
+            // Update cabin section title and subtitle if available
+            const cabinTitle = document.querySelector('.model-cabin-container h2');
+            const cabinSubtitle = document.querySelector('.model-cabin-subtitle');
+            
+            if (model.cabinTitles && model.cabinTitles.length > 0) {
+                cabinTitle.textContent = model.cabinTitles[0];
+                cabinSubtitle.textContent = model.cabinDescriptions ? model.cabinDescriptions[0] : '';
+            } else {
+                cabinTitle.textContent = 'Customizable, smart cabin arrangements for multiple uses';
+                cabinSubtitle.textContent = 'Cabin layout the way you want it';
+            }
+        }
+
+        // Update cabin text based on current slide for G6
+        function updateCabinText() {
+            if (currentModel !== 'G6') return;
+            
+            const model = models[currentModel];
+            const cabinTitle = document.querySelector('.model-cabin-container h2');
+            const cabinSubtitle = document.querySelector('.model-cabin-subtitle');
+            
+            if (model.cabinTitles && model.cabinTitles[currentSlide]) {
+                cabinTitle.textContent = model.cabinTitles[currentSlide];
+                cabinSubtitle.textContent = model.cabinDescriptions[currentSlide];
+            }
+        }
+
+        // Populate color picker based on model
+        function populateColorPicker(modelKey) {
+            const model = models[modelKey];
+            if (!model.colors) return;
+            
+            const colorPickerColors = document.getElementById('colorPickerColors');
+            colorPickerColors.innerHTML = '';
+            
+            const colorKeys = Object.keys(model.colors);
+            const colorNames = model.colorNames || colorKeys.map(key => {
+                return key.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+            });
+            
+            colorKeys.forEach((colorKey, index) => {
+                const option = document.createElement('div');
+                option.className = index === 0 ? 'color-option active' : 'color-option';
+                option.dataset.color = colorKey;
+                option.innerHTML = `
+                    <div class="color-circle ${colorKey}"></div>
+                    <span class="color-name">${colorNames[index]}</span>
+                `;
+                option.addEventListener('click', () => changeColor(colorKey));
+                colorPickerColors.appendChild(option);
+            });
+        }
+
+        // Handle color change
+        function changeColor(colorKey) {
+            const model = models[currentModel];
+            if (!model.colors) return;
+            
+            const modelImage = document.getElementById('modelImage');
+            
+            modelImage.classList.add('fade-enter');
+            
+            setTimeout(() => {
+                modelImage.src = model.colors[colorKey];
+                currentColor = colorKey;
+                
+                setTimeout(() => {
+                    modelImage.classList.remove('fade-enter');
+                }, 50);
+            }, 300);
+            
+            // Update active color option
+            document.querySelectorAll('.color-option').forEach(option => {
+                if (option.dataset.color === colorKey) {
+                    option.classList.add('active');
+                } else {
+                    option.classList.remove('active');
+                }
+            });
+        }
+
+        // Update pricing based on model
+        function updatePricing(modelKey) {
+            const model = models[modelKey];
+            const priceType1 = document.getElementById('priceType1');
+            const priceValue1 = document.getElementById('priceValue1');
+            const priceType2 = document.getElementById('priceType2');
+            const priceValue2 = document.getElementById('priceValue2');
+            
+            priceType1.textContent = model.pricing[0].type;
+            priceValue1.textContent = model.pricing[0].price;
+            priceType2.textContent = model.pricing[1].type;
+            priceValue2.textContent = model.pricing[1].price;
+        }
+
+        // Switch model
+        function switchModel(modelKey) {
+            if (currentModel === modelKey) return;
+            
+            const model = models[modelKey];
+            const modelImage = document.getElementById('modelImage');
+            const modelName = document.getElementById('modelName');
+            const modelType = document.getElementById('modelType');
+            const modelDetailBtn = document.getElementById('modelDetailBtn');
+            const specsDetailBtn = document.getElementById('specsDetailBtn');
+            const specsSection = document.getElementById('specsSection');
+            
+            // Fade out
+            modelImage.classList.add('fade-enter');
+            
+            setTimeout(() => {
+                // Update content
+                modelImage.src = model.image;
+                modelName.textContent = model.name;
+                modelType.textContent = model.type;
+                modelDetailBtn.href = model.detailUrl;
+                
+                // Show/hide and populate color picker
+                const colorPickerSection = document.getElementById('colorPickerSection');
+                if (model.colors) {
+                    populateColorPicker(modelKey);
+                    colorPickerSection.classList.add('active');
+                    currentColor = Object.keys(model.colors)[0];
+                } else {
+                    colorPickerSection.classList.remove('active');
+                }
+                
+                // Update grid images
+                updateGridImages(modelKey);
+                
+                // Update cabin images
+                updateCabinImages(modelKey);
+                
+                // Update pricing
+                updatePricing(modelKey);
+                
+                // Show/hide sections - both models show all sections
+                specsSection.style.display = 'block';
+                
+                // Fade in
+                setTimeout(() => {
+                    modelImage.classList.remove('fade-enter');
+                }, 50);
+            }, 300);
+            
+            currentModel = modelKey;
+            
+            // Update active tab
+            document.querySelectorAll('.model-tab').forEach(tab => {
+                if (tab.dataset.model === modelKey) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+        }
+
+        // Initialize
+        window.addEventListener('scroll', handleNavbarScroll);
+        window.addEventListener('load', () => {
+            handleMobileMenu();
+            handleNavbarScroll();
+            
+            // Tab click handlers
+            document.querySelectorAll('.model-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    switchModel(tab.dataset.model);
+                });
+            });
+            
+            // Carousel navigation
+            document.getElementById('cabinNext').addEventListener('click', nextSlide);
+            document.getElementById('cabinPrev').addEventListener('click', prevSlide);
+            
+            // Carousel dots (initial setup, will be recreated dynamically)
+            document.querySelectorAll('.model-carousel-dot').forEach(dot => {
+                dot.addEventListener('click', () => {
+                    goToSlide(parseInt(dot.dataset.index));
+                });
+            });
+            
+            // Initialize color picker for X9
+            populateColorPicker('x9');
+            document.getElementById('colorPickerSection').classList.add('active');
+            
+            // Auto-advance carousel
+            setInterval(nextSlide, 5000);
+        });
+    </script>
+</body>
+</html>
