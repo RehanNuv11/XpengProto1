@@ -51,10 +51,10 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(to bottom, 
-                #f8f8f8 0%, 
-                transparent 15%, 
-                transparent 85%, 
+            background: linear-gradient(to bottom,
+                #f8f8f8 0%,
+                transparent 15%,
+                transparent 85%,
                 #f8f8f8 100%
             );
             pointer-events: none;
@@ -376,6 +376,121 @@
             color: var(--secondary-color);
         }
 
+        /* G6 About Carousel Section */
+        .g6-about-section {
+            padding: 4rem 2rem;
+            background: #f8f8f8;
+            display: none;
+        }
+
+        .g6-about-section.active {
+            display: block;
+        }
+
+        .g6-about-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .g6-about-carousel {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            background: white;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .g6-about-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .g6-about-slide {
+            min-width: 100%;
+            flex-shrink: 0;
+        }
+
+        .g6-about-slide img {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .g6-about-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: var(--primary-color);
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .g6-about-arrow:hover {
+            background: white;
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .g6-about-arrow.prev {
+            left: 1.5rem;
+        }
+
+        .g6-about-arrow.next {
+            right: 1.5rem;
+        }
+
+        .g6-about-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid #e0e0e0;
+            background: white;
+        }
+
+        .g6-about-tab {
+            padding: 0.5rem 0;
+            font-size: 15px;
+            font-weight: 500;
+            color: #999;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .g6-about-tab:hover {
+            color: var(--primary-color);
+        }
+
+        .g6-about-tab.active {
+            color: var(--primary-color);
+            border-bottom-color: #10b981;
+            font-weight: 600;
+        }
+
+        .g6-about-description {
+            text-align: center;
+            padding: 1.5rem 2rem;
+            background: white;
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
+
         /* Advantages Section */
         .model-advantages-section {
             padding: 6rem 2rem;
@@ -614,6 +729,46 @@
                 grid-template-columns: 1fr;
                 gap: 2rem;
             }
+
+            .g6-about-slide img {
+                height: 300px;
+            }
+
+            .g6-about-tabs {
+                flex-direction: column;
+                gap: 0;
+                padding: 0;
+            }
+
+            .g6-about-tab {
+                padding: 1rem;
+                border-bottom: 1px solid #e0e0e0;
+                border-left: 3px solid transparent;
+            }
+
+            .g6-about-tab.active {
+                border-bottom-color: #e0e0e0;
+                border-left-color: #10b981;
+                background: #f9fafb;
+            }
+
+            .g6-about-tab:last-child {
+                border-bottom: none;
+            }
+
+            .g6-about-arrow {
+                width: 35px;
+                height: 35px;
+                font-size: 16px;
+            }
+
+            .g6-about-arrow.prev {
+                left: 0.5rem;
+            }
+
+            .g6-about-arrow.next {
+                right: 0.5rem;
+            }
         }
     </style>
 </head>
@@ -674,19 +829,19 @@
         <div class="model-specs-container">
             <!-- Specs Content (Kiri) -->
             <div class="model-specs-content">
-                <div class="spec-item">
+                <div class="spec-item" id="specAccel">
                     <div class="spec-value">5.7<span>s</span></div>
                     <div class="spec-label">Acceleration 0 - 100 km/h</div>
                 </div>
 
-                <div class="spec-item">
+                <div class="spec-item" id="specPower">
                     <div class="spec-value">370<span>kW</span> / 640<span>Nm</span></div>
                     <div class="spec-label">Power (kW) / Torque (Nm)</div>
                 </div>
 
-                <div class="spec-item">
+                <div class="spec-item" id="specRange">
                     <div class="spec-value">702<span>km</span></div>
-                    <div class="spec-label">CLTC Range</div>
+                    <div class="spec-label">WLTP Range</div>
                 </div>
 
                 <!-- Pricing Table -->
@@ -701,7 +856,7 @@
                             <div class="model-price-cell type" id="priceType1">X9 PRO</div>
                             <div class="model-price-cell price" id="priceValue1">Rp 1.169.000.000</div>
                         </div>
-                        <div class="model-price-row">
+                        <div class="model-price-row" id="priceRow2">
                             <div class="model-price-cell type" id="priceType2">X9 PRO+</div>
                             <div class="model-price-cell price" id="priceValue2">Rp 1.209.000.000</div>
                         </div>
@@ -724,11 +879,43 @@
         </div>
     </section>
 
+    <!-- G6 About Section (Only shows for G6) -->
+    <section class="g6-about-section" id="g6AboutSection">
+        <div class="g6-about-container">
+            <div class="g6-about-carousel">
+                <div class="g6-about-track" id="g6AboutTrack">
+                    <div class="g6-about-slide">
+                        <img src="asset/g6/about1.jpg" alt="First-Class Comfort in the Front">
+                    </div>
+                    <div class="g6-about-slide">
+                        <img src="asset/g6/about2.jpg" alt="Lounge-Like Rear Cabin">
+                    </div>
+                    <div class="g6-about-slide">
+                        <img src="asset/g6/about3.jpg" alt="Versatile Storage Solutions">
+                    </div>
+                </div>
+
+                <button class="g6-about-arrow prev" id="g6AboutPrev">‹</button>
+                <button class="g6-about-arrow next" id="g6AboutNext">›</button>
+            </div>
+
+            <div class="g6-about-tabs" id="g6AboutTabs">
+                <button class="g6-about-tab active" data-index="0">First-Class Comfort in the Front</button>
+                <button class="g6-about-tab" data-index="1">Lounge-Like Rear Cabin</button>
+                <button class="g6-about-tab" data-index="2">Versatile Storage Solutions</button>
+            </div>
+
+            <div class="g6-about-description" id="g6AboutDescription">
+                Electrically adjustable Nappa leather seats with ventilation, heating, and massage ²
+            </div>
+        </div>
+    </section>
+
     <!-- Advantages Section -->
     <section class="model-advantages-section" id="advantagesSection">
         <div class="model-advantages-container">
             <img src="asset/x9/keungulan.jpg" alt="Interior Advantages" class="advantages-image" id="advantagesImage">
-            
+
             <div class="advantages-grid" id="advantagesGrid">
                 <div class="advantage-item">
                     <h3 class="advantage-title">Zero-gravity Reclining Sofas</h3>
@@ -751,7 +938,7 @@
         <div class="model-cabin-container">
             <h2>Customizable, smart cabin arrangements for multiple uses</h2>
             <p class="model-cabin-subtitle">Cabin layout the way you want it</p>
-            
+
             <div class="model-cabin-carousel">
                 <div class="model-cabin-track" id="cabinTrack">
                     <div class="model-cabin-slide">
@@ -764,11 +951,11 @@
                         <img src="asset/x9/cabin3.jpg" alt="Cabin Configuration 3" id="cabin3">
                     </div>
                 </div>
-                
+
                 <button class="model-carousel-arrow prev" id="cabinPrev">‹</button>
                 <button class="model-carousel-arrow next" id="cabinNext">›</button>
             </div>
-            
+
             <div class="model-carousel-dots" id="cabinDots">
                 <button class="model-carousel-dot active" data-index="0"></button>
                 <button class="model-carousel-dot" data-index="1"></button>
@@ -817,6 +1004,25 @@
     </footer>
 
     <script>
+        // G6 About Slides Data
+        const g6AboutSlides = [
+            {
+                image: 'asset/g6/about1.jpg',
+                title: 'First-Class Comfort in the Front',
+                description: 'Electrically adjustable Nappa leather seats with ventilation, heating, and massage ²'
+            },
+            {
+                image: 'asset/g6/about2.jpg',
+                title: 'Lounge-Like Rear Cabin',
+                description: '12-position adjustment for ultimate relaxation'
+            },
+            {
+                image: 'asset/g6/about3.jpg',
+                title: 'Versatile Storage Solutions',
+                description: '571L ¹ (1374L ¹ with rear seats folded) rear trunk + center console with underfloor stowage for everyday utility'
+            }
+        ];
+
         // Model data
         const models = {
             x9: {
@@ -842,6 +1048,11 @@
                     'asset/x9/cabin2.jpg',
                     'asset/x9/cabin3.jpg'
                 ],
+                specs: {
+                    accel: '5.7<span>s</span>',
+                    power: '370<span>kW</span> / 640<span>Nm</span>',
+                    range: '702<span>km</span>'
+                },
                 pricing: [
                     { type: 'X9 PRO', price: 'Rp 1.169.000.000' },
                     { type: 'X9 PRO+', price: 'Rp 1.209.000.000' }
@@ -850,7 +1061,7 @@
             G6: {
                 name: 'XPENG G6',
                 type: 'Premium Intelligent SUV',
-                image: 'asset/g6/white.png  ',
+                image: 'asset/g6/white.png',
                 detailUrl: 'index.html#models',
                 brochureUrl: 'asset/g6/NEW G6 spect sheet.pdf',
                 colors: {
@@ -858,10 +1069,9 @@
                     'graphite-gray': 'asset/g6/gray.png',
                     'midnight-black': 'asset/g6/black.png',
                     'silver-frost': 'asset/g6/silver.png',
-                    'stellar-purple': 'asset/g6/purple.png',
                     'black-edition': 'asset/g6/blackedition.png'
                 },
-                colorNames: ['Arctic White', 'Graphite Gray', 'Midnight Black', 'Silver Frost', 'Stellar Purple', 'Black Edition'],
+                colorNames: ['Arctic White', 'Graphite Gray', 'Midnight Black', 'Silver Frost', 'Black Edition'],
                 gridImages: [
                     'asset/g6/grid1.jpg',
                     'asset/g6/grid2.jpg',
@@ -889,9 +1099,13 @@
                     'Seamless voice control, OTA-upgradeable interface',
                     '5C Supercharging Battery, 10-80% SOC in 12 Minutes, advanced thermal control'
                 ],
+                specs: {
+                    accel: '6.7<span>s</span>',
+                    power: '218<span>kW</span> / 440<span>Nm</span>',
+                    range: '618 <span>NEDC</span> / 525 <span>WLTP</span>'
+                },
                 pricing: [
-                    { type: 'G6 550', price: 'Rp 950.000.000' },
-                    { type: 'G6 650', price: 'Rp 1.050.000.000' }
+                    { type: 'G6 PRO', price: 'Rp 679.000.000' }
                 ]
             }
         };
@@ -900,6 +1114,7 @@
         let currentSlide = 0;
         let totalSlides = 3;
         let currentColor = 'arctic-white';
+        let g6AboutSlide = 0;
 
         // Navbar scroll effect
         function handleNavbarScroll() {
@@ -915,7 +1130,7 @@
         function handleMobileMenu() {
             const navbarToggle = document.getElementById('navbarToggle');
             const navbarMenu = document.getElementById('navbarMenu');
-            
+
             navbarToggle.addEventListener('click', () => {
                 navbarMenu.classList.toggle('active');
                 navbarToggle.classList.toggle('active');
@@ -926,9 +1141,9 @@
         function updateCarousel() {
             const track = document.getElementById('cabinTrack');
             const dots = document.querySelectorAll('.model-carousel-dot');
-            
+
             track.style.transform = `translateX(-${currentSlide * 100}%)`;
-            
+
             dots.forEach((dot, index) => {
                 if (index === currentSlide) {
                     dot.classList.add('active');
@@ -956,11 +1171,57 @@
             updateCabinText();
         }
 
+        // G6 About Carousel Functions
+        function updateG6AboutCarousel() {
+            const track = document.getElementById('g6AboutTrack');
+            const tabs = document.querySelectorAll('.g6-about-tab');
+            const description = document.getElementById('g6AboutDescription');
+
+            track.style.transform = `translateX(-${g6AboutSlide * 100}%)`;
+
+            tabs.forEach((tab, index) => {
+                if (index === g6AboutSlide) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+
+            if (g6AboutSlides[g6AboutSlide]) {
+                description.textContent = g6AboutSlides[g6AboutSlide].description;
+            }
+        }
+
+        function nextG6AboutSlide() {
+            g6AboutSlide = (g6AboutSlide + 1) % 3;
+            updateG6AboutCarousel();
+        }
+
+        function prevG6AboutSlide() {
+            g6AboutSlide = (g6AboutSlide - 1 + 3) % 3;
+            updateG6AboutCarousel();
+        }
+
+        function goToG6AboutSlide(index) {
+            g6AboutSlide = index;
+            updateG6AboutCarousel();
+        }
+
+        // Update specs based on model
+        function updateSpecs(modelKey) {
+            const model = models[modelKey];
+            if (!model.specs) return;
+
+            document.querySelector('#specAccel .spec-value').innerHTML = model.specs.accel;
+            document.querySelector('#specPower .spec-value').innerHTML = model.specs.power;
+            document.querySelector('#specRange .spec-value').innerHTML = model.specs.range;
+        }
+
         // Update grid images based on model
         function updateGridImages(modelKey) {
             const model = models[modelKey];
             if (!model.gridImages) return;
-            
+
             const gridImages = document.querySelectorAll('.model-features-grid .feature-image');
             model.gridImages.forEach((src, index) => {
                 if (gridImages[index]) {
@@ -974,11 +1235,11 @@
             const model = models[modelKey];
             const track = document.getElementById('cabinTrack');
             const dotsContainer = document.getElementById('cabinDots');
-            
+
             // Clear existing slides and dots
             track.innerHTML = '';
             dotsContainer.innerHTML = '';
-            
+
             // Create slides for each cabin image
             model.cabinImages.forEach((src, index) => {
                 // Create slide
@@ -990,7 +1251,7 @@
                 img.id = `cabin${index + 1}`;
                 slide.appendChild(img);
                 track.appendChild(slide);
-                
+
                 // Create dot
                 const dot = document.createElement('button');
                 dot.className = index === 0 ? 'model-carousel-dot active' : 'model-carousel-dot';
@@ -998,16 +1259,16 @@
                 dot.addEventListener('click', () => goToSlide(parseInt(dot.dataset.index)));
                 dotsContainer.appendChild(dot);
             });
-            
+
             // Update total slides
             totalSlides = model.cabinImages.length;
             currentSlide = 0;
             updateCarousel();
-            
+
             // Update cabin section title and subtitle if available
             const cabinTitle = document.querySelector('.model-cabin-container h2');
             const cabinSubtitle = document.querySelector('.model-cabin-subtitle');
-            
+
             if (model.cabinTitles && model.cabinTitles.length > 0) {
                 cabinTitle.textContent = model.cabinTitles[0];
                 cabinSubtitle.textContent = model.cabinDescriptions ? model.cabinDescriptions[0] : '';
@@ -1020,11 +1281,11 @@
         // Update cabin text based on current slide for G6
         function updateCabinText() {
             if (currentModel !== 'G6') return;
-            
+
             const model = models[currentModel];
             const cabinTitle = document.querySelector('.model-cabin-container h2');
             const cabinSubtitle = document.querySelector('.model-cabin-subtitle');
-            
+
             if (model.cabinTitles && model.cabinTitles[currentSlide]) {
                 cabinTitle.textContent = model.cabinTitles[currentSlide];
                 cabinSubtitle.textContent = model.cabinDescriptions[currentSlide];
@@ -1035,15 +1296,15 @@
         function populateColorPicker(modelKey) {
             const model = models[modelKey];
             if (!model.colors) return;
-            
+
             const colorPickerColors = document.getElementById('colorPickerColors');
             colorPickerColors.innerHTML = '';
-            
+
             const colorKeys = Object.keys(model.colors);
             const colorNames = model.colorNames || colorKeys.map(key => {
                 return key.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
             });
-            
+
             colorKeys.forEach((colorKey, index) => {
                 const option = document.createElement('div');
                 option.className = index === 0 ? 'color-option active' : 'color-option';
@@ -1061,20 +1322,20 @@
         function changeColor(colorKey) {
             const model = models[currentModel];
             if (!model.colors) return;
-            
+
             const modelImage = document.getElementById('modelImage');
-            
+
             modelImage.classList.add('fade-enter');
-            
+
             setTimeout(() => {
                 modelImage.src = model.colors[colorKey];
                 currentColor = colorKey;
-                
+
                 setTimeout(() => {
                     modelImage.classList.remove('fade-enter');
                 }, 50);
             }, 300);
-            
+
             // Update active color option
             document.querySelectorAll('.color-option').forEach(option => {
                 if (option.dataset.color === colorKey) {
@@ -1090,19 +1351,24 @@
             const model = models[modelKey];
             const priceType1 = document.getElementById('priceType1');
             const priceValue1 = document.getElementById('priceValue1');
-            const priceType2 = document.getElementById('priceType2');
-            const priceValue2 = document.getElementById('priceValue2');
-            
+            const priceRow2 = document.getElementById('priceRow2');
+
             priceType1.textContent = model.pricing[0].type;
             priceValue1.textContent = model.pricing[0].price;
-            priceType2.textContent = model.pricing[1].type;
-            priceValue2.textContent = model.pricing[1].price;
+
+            if (model.pricing.length > 1) {
+                priceRow2.style.display = 'grid';
+                document.getElementById('priceType2').textContent = model.pricing[1].type;
+                document.getElementById('priceValue2').textContent = model.pricing[1].price;
+            } else {
+                priceRow2.style.display = 'none';
+            }
         }
 
         // Switch model
         function switchModel(modelKey) {
             if (currentModel === modelKey) return;
-            
+
             const model = models[modelKey];
             const modelImage = document.getElementById('modelImage');
             const modelName = document.getElementById('modelName');
@@ -1110,17 +1376,19 @@
             const modelDetailBtn = document.getElementById('modelDetailBtn');
             const downloadBrochureBtn = document.getElementById('downloadBrochureBtn');
             const specsSection = document.getElementById('specsSection');
-            
+            const g6AboutSection = document.getElementById('g6AboutSection');
+            const advantagesSection = document.getElementById('advantagesSection');
+
             // Fade out
             modelImage.classList.add('fade-enter');
-            
+
             setTimeout(() => {
                 // Update content
                 modelImage.src = model.image;
                 modelName.textContent = model.name;
                 modelType.textContent = model.type;
                 if (modelDetailBtn) modelDetailBtn.href = model.detailUrl;
-                
+
                 // Show/hide and populate color picker
                 const colorPickerSection = document.getElementById('colorPickerSection');
                 if (model.colors) {
@@ -1130,30 +1398,44 @@
                 } else {
                     colorPickerSection.classList.remove('active');
                 }
-                
+
+                // Update specs
+                updateSpecs(modelKey);
+
                 // Update grid images
                 updateGridImages(modelKey);
-                
+
                 // Update cabin images
                 updateCabinImages(modelKey);
-                
+
                 // Update pricing
                 updatePricing(modelKey);
-                
+
                 // Update brochure link
                 if (downloadBrochureBtn) downloadBrochureBtn.href = model.brochureUrl;
-                
+
+                // Show/hide G6 About section and Advantages section
+                if (modelKey === 'G6') {
+                    g6AboutSection.classList.add('active');
+                    g6AboutSlide = 0;
+                    updateG6AboutCarousel();
+                    advantagesSection.style.display = 'none';
+                } else {
+                    g6AboutSection.classList.remove('active');
+                    advantagesSection.style.display = 'block';
+                }
+
                 // Show/hide sections - both models show all sections
                 specsSection.style.display = 'block';
-                
+
                 // Fade in
                 setTimeout(() => {
                     modelImage.classList.remove('fade-enter');
                 }, 50);
             }, 300);
-            
+
             currentModel = modelKey;
-            
+
             // Update active tab
             document.querySelectorAll('.model-tab').forEach(tab => {
                 if (tab.dataset.model === modelKey) {
@@ -1169,36 +1451,47 @@
         window.addEventListener('load', () => {
             handleMobileMenu();
             handleNavbarScroll();
-            
+
             // Tab click handlers
             document.querySelectorAll('.model-tab').forEach(tab => {
                 tab.addEventListener('click', () => {
                     switchModel(tab.dataset.model);
                 });
             });
-            
+
             // Carousel navigation
             document.getElementById('cabinNext').addEventListener('click', nextSlide);
             document.getElementById('cabinPrev').addEventListener('click', prevSlide);
-            
+
+            // G6 About Carousel navigation
+            document.getElementById('g6AboutNext').addEventListener('click', nextG6AboutSlide);
+            document.getElementById('g6AboutPrev').addEventListener('click', prevG6AboutSlide);
+
+            // G6 About Tabs
+            document.querySelectorAll('.g6-about-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    goToG6AboutSlide(parseInt(tab.dataset.index));
+                });
+            });
+
             // Carousel dots (initial setup, will be recreated dynamically)
             document.querySelectorAll('.model-carousel-dot').forEach(dot => {
                 dot.addEventListener('click', () => {
                     goToSlide(parseInt(dot.dataset.index));
                 });
             });
-            
+
             // Initialize color picker for X9
             populateColorPicker('x9');
             document.getElementById('colorPickerSection').classList.add('active');
-            
+
             // Check URL parameters to auto-select model
             const urlParams = new URLSearchParams(window.location.search);
             const modelParam = urlParams.get('model');
             if (modelParam && models[modelParam]) {
                 switchModel(modelParam);
             }
-            
+
             // Auto-advance carousel
             setInterval(nextSlide, 5000);
         });
