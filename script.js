@@ -77,12 +77,13 @@ function handleModelCards() {
         const video = card.querySelector('.model-video');
         const modelType = card.getAttribute('data-model');
         
-        // Add click handler for X9 card
-        if (modelType === 'x9') {
+        // Add click handler for both X9 and G6 cards
+        if (modelType === 'x9' || modelType === 'g6') {
             card.addEventListener('click', (e) => {
                 // Don't navigate if clicking the arrow link
                 if (!e.target.closest('.model-card-link')) {
-                    window.location.href = 'x9.html';
+                    const modelParam = modelType === 'x9' ? 'x9' : 'G6';
+                    window.location.href = `models.html?model=${modelParam}`;
                 }
             });
             card.style.cursor = 'pointer';

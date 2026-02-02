@@ -709,7 +709,7 @@
                 </div>
 
                 <div class="specs-cta">
-                    <a href="#" class="btn" id="specsDetailBtn" onclick="event.preventDefault(); alert('Brochure akan segera tersedia');">Download Brochure</a>
+                    <a href="asset/x9/XPENG-Brosur-X9-rev.pdf" class="btn" id="downloadBrochureBtn" download>Download Brochure</a>
                     <a href="https://wa.link/930fd6" target="_blank" class="btn btn-primary">Book Test Drive</a>
                 </div>
             </div>
@@ -824,6 +824,7 @@
                 type: 'Ultra Smart Large Seven-seater MPV',
                 image: 'asset/x9/x9.jpeg',
                 detailUrl: 'x9.html',
+                brochureUrl: 'asset/x9/XPENG-Brosur-X9-rev.pdf',
                 colors: {
                     'silver-frost': 'asset/x9/x9.jpeg',
                     'midnight-black': 'asset/x9/x9.jpeg',
@@ -851,6 +852,7 @@
                 type: 'Premium Intelligent SUV',
                 image: 'asset/g6/white.png  ',
                 detailUrl: 'index.html#models',
+                brochureUrl: 'asset/g6/NEW G6 spect sheet.pdf',
                 colors: {
                     'arctic-white': 'asset/g6/white.png',
                     'graphite-gray': 'asset/g6/gray.png',
@@ -1106,7 +1108,7 @@
             const modelName = document.getElementById('modelName');
             const modelType = document.getElementById('modelType');
             const modelDetailBtn = document.getElementById('modelDetailBtn');
-            const specsDetailBtn = document.getElementById('specsDetailBtn');
+            const downloadBrochureBtn = document.getElementById('downloadBrochureBtn');
             const specsSection = document.getElementById('specsSection');
             
             // Fade out
@@ -1117,7 +1119,7 @@
                 modelImage.src = model.image;
                 modelName.textContent = model.name;
                 modelType.textContent = model.type;
-                modelDetailBtn.href = model.detailUrl;
+                if (modelDetailBtn) modelDetailBtn.href = model.detailUrl;
                 
                 // Show/hide and populate color picker
                 const colorPickerSection = document.getElementById('colorPickerSection');
@@ -1137,6 +1139,9 @@
                 
                 // Update pricing
                 updatePricing(modelKey);
+                
+                // Update brochure link
+                if (downloadBrochureBtn) downloadBrochureBtn.href = model.brochureUrl;
                 
                 // Show/hide sections - both models show all sections
                 specsSection.style.display = 'block';
@@ -1186,6 +1191,13 @@
             // Initialize color picker for X9
             populateColorPicker('x9');
             document.getElementById('colorPickerSection').classList.add('active');
+            
+            // Check URL parameters to auto-select model
+            const urlParams = new URLSearchParams(window.location.search);
+            const modelParam = urlParams.get('model');
+            if (modelParam && models[modelParam]) {
+                switchModel(modelParam);
+            }
             
             // Auto-advance carousel
             setInterval(nextSlide, 5000);
