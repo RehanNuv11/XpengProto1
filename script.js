@@ -83,7 +83,7 @@ function handleModelCards() {
                 // Don't navigate if clicking the arrow link
                 if (!e.target.closest('.model-card-link')) {
                     const modelParam = modelType === 'x9' ? 'x9' : 'G6';
-                    window.location.href = `models.html?model=${modelParam}`;
+                    window.location.href = `models/?model=${modelParam}`;
                 }
             });
             card.style.cursor = 'pointer';
@@ -248,6 +248,21 @@ document.addEventListener('DOMContentLoaded', () => {
             galleryItem.appendChild(overlay);
             galleryGrid.appendChild(galleryItem);
         });
+    }
+
+    // ========== PROMO VIDEO AUTO-PLAY ON SCROLL ==========
+    const promoVideo = document.getElementById('promoVideo');
+    if (promoVideo) {
+        const promoObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    promoVideo.play();
+                } else {
+                    promoVideo.pause();
+                }
+            });
+        }, { threshold: 0.3 });
+        promoObserver.observe(promoVideo);
     }
 
     console.log('XPENG Landing Page Loaded ✓');
